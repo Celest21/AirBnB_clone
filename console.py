@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import cmd
 
+
 class HBNBCommand(cmd.Cmd):
     """Command interpreter for HBNB project."""
-    
+
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
@@ -27,6 +28,6 @@ class HBNBCommand(cmd.Cmd):
         """Help message for EOF command."""
         print("Exit the program at end of file")
 
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-

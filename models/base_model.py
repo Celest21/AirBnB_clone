@@ -26,7 +26,7 @@ class BaseModel:
         """creation and update timestamps to the current UTC time"""
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
-        
+
         """If keyword arguments are provided, update instance attributes"""
         if kwargs:
             for key, value in kwargs.items():
@@ -63,4 +63,3 @@ class BaseModel:
         inst_dict["updated_at"] = self.updated_at.isoformat()
 
         return inst_dict
-

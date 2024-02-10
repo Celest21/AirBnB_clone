@@ -4,6 +4,7 @@ import json
 import os
 from models.base_model import BaseModel
 
+
 class FileStorage:
     """Defines the blueprint of saving and retrieving objects .
 
@@ -13,6 +14,7 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
+
 
 class FileStorage:
     """
@@ -33,14 +35,12 @@ class FileStorage:
 
         FileStorage.__objects[key] = obj
 
-
     def all(self):
         """
         Returns the __objects dictionary.
         It provides access to all the stored objects.
         """
-        return  FileStorage.__objects
-
+        return FileStorage.__objects
 
     def save(self):
         """
