@@ -15,15 +15,6 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-
-class FileStorage:
-    """
-    FileStorage class for storing, serializing and deserializing data
-    """
-    __file_path = "file.json"
-
-    __objects = {}
-
     def new(self, obj):
         """
          Sets an object in the __objects dictionary with a key of
