@@ -1,65 +1,56 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+"""BaseModel Class.
+
+This module contains a class that defines all other classes in this project.
 """
-Module for the BaseModel class.
+import models
+import uuid
+from datetime import datetime
 
-Blueprint for subclasses
+time_format = "%Y-%m-%dT%H:%M:%S.%f"
 
-Attributes:
+
+class BaseModel:
+    """Defines the blueprint of the subclasses.
+
+    Attributes:
         id: string - assign with an uuid when an object is created
         created_at: datetime - assign with the current datetime when an
                     object is created
         updated_at: datetime - assign with the current datetime when an
                     object is created and it will be updated every time
                     you change your object
-"""
-import uuid
-from datetime import datetime
-import models
+    """
 
-
-class BaseModel:
     def __init__(self, *args, **kwargs):
-        """time format for datetime conversion"""
-        time_format = "%Y-%m-%dT%H:%M:%S.%f"
-        """a unique ID for the instance"""
-        self.id = str(uuid.uuid4())
-        """creation and update timestamps to the current UTC time"""
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
-
-        """If keyword arguments are provided, update instance attributes"""
+        """An object constructor method"""
         if kwargs:
             for key, value in kwargs.items():
-                if key == "__class__":
-                    continue
-                elif key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, time_format))
-                else:
-                    setattr(self, key, value)
-
-        models.storage.new(self)
+                if key != "__class__":
+                    if key == "created_at" or key == "updated_at":
+                        self.__dict__[key] = datetime.strptime(
+                            value, time_format)
+                    else:
+                        self.__dict__[key] = value
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            models.storage.new(self)
 
     def __str__(self):
-        """
-        Return a string representation of the instance
-        """
-        class_name = self.__class__.__name__
-        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+        """A string representation of object"""
+        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        """
-        Save the current state of the instance and update the storage
-        """
-        self.updated_at = datetime.utcnow()
+        """Updates updated_at with the current datetime and save modelobject"""
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """
-        Convert the instance to a dictionary representation
-        """
-        inst_dict = self.__dict__.copy()
-        inst_dict["__class__"] = self.__class__.__name__
-        inst_dict["created_at"] = self.created_at.isoformat()
-        inst_dict["updated_at"] = self.updated_at.isoformat()
-
-        return inst_dict
+        """Returns a modified dictionary with all attributes of an object"""
+        new_obj_dict = self.__dict__.copy()
+        new_obj_dict["__class__"] = type(self).__name__
+        new_obj_dict["created_at"] = self.created_at.strftime(time_format)
+        new_obj_dict["updated_at"] = self.updated_at.strftime(time_format)
+        return new_obj_dict
