@@ -1,25 +1,27 @@
 #!/usr/bin/python3
+"""The Command Line Interpreter."""
 
+from models import *
+import json
 import cmd
+import re
 
 
 class HBNBCommand(cmd.Cmd):
-    prompt = '(hbnb) '
+    """Class that defines Airbnb clone public class instances."""
 
-    def do_quit(self, args):
-        '''<Quit> Command To Exit The Program'''
-        return True
+    prompt = "(hbnb) "
 
-    def do_EOF(self, args):
-        '''Handles end of file'''
-        return True
+    def do_EOF(self, line):
+        """Function handle end of file character (Ctrl+D)."""
 
-    def emptyline(self):
-        '''dont execute anything when the user
-           presses enter on an empty line
-        '''
-        pass
+        print()
+        return (True)
+
+    def do_quit(self, line):
+        """Function that exits the shell in interactive mode."""
+
+        return (True)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
