@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+
 import cmd
+from models.base_model import BaseModel
+from models import storage
+import json
+import re
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
