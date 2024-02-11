@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """The Command Line Interpreter."""
 
-from models import *
+from models.base_model import BaseModel
+from models import storage
 import json
 import cmd
 import re
