@@ -145,7 +145,10 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return
 
-            attr_value_str = args[3]
+            # Handle string arguments with spaces between double quotes
+            attr_value_str = ' '.join(args[3:])
+            if attr_value_str[0] == '"' and attr_value_str[-1] == '"':
+                attr_value_str = attr_value_str[1:-1]
 
             instance = models.storage.all()[key]
             attr_value = None
