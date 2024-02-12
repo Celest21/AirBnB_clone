@@ -3,7 +3,7 @@
 import json
 import os
 from models.base_model import BaseModel
-
+from models.user import User
 
 class FileStorage:
     """Defines the blueprint of saving and retrieving objects .

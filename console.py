@@ -6,6 +6,7 @@ from models import storage
 import json
 import cmd
 import re
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """Class that defines Airbnb clone public class instances."""
