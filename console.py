@@ -104,10 +104,10 @@ class HBNBCommand(cmd.Cmd):
             return
         instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
-        if key not in FileStorage.__objects:
+        if key not in FileStorage._FileStorage__objects:
             print("** no instance found **")
         else:
-            del FileStorage.__objects[key]
+            del FileStorage._FileStorage__objects[key]
             FileStorage.save()
 
     def do_update(self, line):
