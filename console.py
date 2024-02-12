@@ -108,7 +108,9 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
         else:
             del FileStorage._FileStorage__objects[key]
-            FileStorage.save()
+
+            file_storage_instance = FileStorage()
+            file_storage_instance.save()
 
     def do_update(self, line):
         """Update an instance based on the class name and id."""
