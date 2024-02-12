@@ -69,7 +69,11 @@ class FileStorage:
                     for key, value in obj_dict.items():
                         class_name, obj_id = key.split('.')
 
-                        cls = eval(class_name)
+                        # Convert class_name to class
+                        if class_name == "User":
+                            cls = User
+                        else:
+                            cls = eval(class_name)
 
                         instance = cls(**value)
 
