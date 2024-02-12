@@ -7,7 +7,7 @@ Module for the User class.
 from models.base_model import BaseModel
 
 
-class User(User):
+class User(BaseModel):
     """
     User class that inherits from BaseModel.
     """
