@@ -2,11 +2,11 @@
 """The Command Line Interpreter."""
 
 from models.base_model import BaseModel
-from models import storage
 import json
 import cmd
-import re
+import shlex
 from models.user import User
+from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -27,140 +27,119 @@ class HBNBCommand(cmd.Cmd):
         """Function that does nothing on ENTER."""
         pass
 
-    def do_create(self, arg):
-        """
-        Create a new instance of a specified class.
-        Usage: create <class_name>
-        """
-        if not arg:
+    def do_create(self, line):
+        """Create a new instance of a specified class, save it, and print its id."""
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
             return
-
-        arg_list = arg.split()
-        class_name = arg_list[0]
-
-        if class_name not in globals():
+        class_name = args[0]
+        valid_classes = ["BaseModel", "User"]
+        
+        if class_name not in valid_classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = globals()[class_name]()
+        new_instance = eval(class_name)()
         new_instance.save()
         print(new_instance.id)
 
-    def do_show(self, arg):
-        """
-        Show details of a specified instance.
-        Usage: show <class_name> <id>
-        """
-        if not arg:
+    def do_show(self, line):
+        """Print the string representation of an instance based on the class name and id."""
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
             return
+        class_name = args[0]
+        valid_classes = ["BaseModel", "User"]
 
-        arg_list = arg.split()
-        class_name = arg_list[0]
-
-        if class_name not in globals():
+        if class_name not in valid_classes:
             print("** class doesn't exist **")
             return
 
-        if len(arg_list) < 2:
+        if len(args) < 2:
             print("** instance id missing **")
             return
-
-        instance_id = arg_list[1]
+        instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
-
-        if key not in storage.all():
+        if key not in FileStorage._FileStorage__objects:
             print("** no instance found **")
         else:
-            print(storage.all()[key])
+            print(FileStorage._FileStorage__objects[key])
 
-    def do_all(self, arg):
-        """
-        Show details of all instances or all instances of a specified class.
-        Usage: all [<class_name>]
-        """
-        arg_list = arg.split()
-        if arg and arg_list[0] not in globals():
+    def do_all(self, line):
+        """Print all string representations of instances for a specified class."""
+        args = shlex.split(line)
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        valid_classes = ["BaseModel", "User"]
+
+        if class_name not in valid_classes:
             print("** class doesn't exist **")
             return
 
         instances = []
-        for key, value in storage.all().items():
-            if not arg or value.__class__.__name__ == arg_list[0]:
-                instances.append(str(value))
+        for key, obj in FileStorage._FileStorage__objects.items():
+            if key.startswith(class_name + "."):
+                instances.append(str(obj))
+        print(instances)
 
-        print("[{}]".format(", ".join(instances)))
-
-    def do_destroy(self, arg):
-        """
-        Destroy an instance specified by class name and id.
-        Usage: destroy <class_name> <id>
-        """
-        if not arg:
+    def do_destroy(self, line):
+        """Delete an instance based on the class name and id."""
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
             return
+        class_name = args[0]
+        valid_classes = ["BaseModel", "User"]
 
-        arg_list = arg.split()
-        class_name = arg_list[0]
-
-        if class_name not in globals():
+        if class_name not in valid_classes:
             print("** class doesn't exist **")
             return
 
-        if len(arg_list) < 2:
+        if len(args) < 2:
             print("** instance id missing **")
             return
-
-        instance_id = arg_list[1]
+        instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
-
-        if key not in storage.all():
+        if key not in FileStorage.__objects:
             print("** no instance found **")
         else:
-            del storage.all()[key]
-            storage.save()
+            del FileStorage.__objects[key]
+            FileStorage.save()
 
-    def do_update(self, arg):
-        """
-        Update an instance with new attributes.
-        Usage: update <class_name> <id> <attribute_name> "<attribute_value>"
-        """
-        if not arg:
+    def do_update(self, line):
+        """Update an instance based on the class name and id."""
+        args = shlex.split(line)
+        if len(args) == 0:
             print("** class name missing **")
             return
+        class_name = args[0]
+        valid_classes = ["BaseModel", "User"]
 
-        arg_list = arg.split()
-        class_name = arg_list[0]
-
-        if class_name not in globals():
+        if class_name not in valid_classes:
             print("** class doesn't exist **")
             return
 
-        if len(arg_list) < 2:
+        if len(args) < 2:
             print("** instance id missing **")
             return
-
-        instance_id = arg_list[1]
+        instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
-
-        if key not in storage.all():
+        if key not in FileStorage._FileStorage__objects:
             print("** no instance found **")
-            return
-
-        if len(arg_list) < 3:
+        elif len(args) < 3:
             print("** attribute name missing **")
-            return
-
-        if len(arg_list) < 4:
+        elif len(args) < 4:
             print("** value missing **")
-            return
-
-        attribute_name = arg_list[2]
-        attribute_value = arg_list[3].strip('"')
-
-        setattr(storage.all()[key], attribute_name, attribute_value)
-        storage.all()[key].save()
+        else:
+            attribute_name = args[2]
+            value = args[3]
+            instance = FileStorage._FileStorage__objects[key]
+            setattr(instance, attribute_name, value)
+            instance.save()
 
 
 if __name__ == '__main__':
