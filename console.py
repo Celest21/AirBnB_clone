@@ -6,6 +6,11 @@ import json
 import cmd
 import shlex
 from models.user import User
+from models.state import State
+from model.city import City
+from model.amenity import Amenity
+from model.place import Place
+from model.review import Review
 from models.engine.file_storage import FileStorage
 
 
@@ -34,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        valid_classes = ["BaseModel", "User"]
+        valid_classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
         
         if class_name not in valid_classes:
             print("** class doesn't exist **")
@@ -51,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        valid_classes = ["BaseModel", "User"]
+        valid_classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
         if class_name not in valid_classes:
             print("** class doesn't exist **")
@@ -74,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        valid_classes = ["BaseModel", "User"]
+        valid_classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
         if class_name not in valid_classes:
             print("** class doesn't exist **")
@@ -93,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        valid_classes = ["BaseModel", "User"]
+        valid_classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
         if class_name not in valid_classes:
             print("** class doesn't exist **")
@@ -119,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        valid_classes = ["BaseModel", "User"]
+        valid_classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
         if class_name not in valid_classes:
             print("** class doesn't exist **")
