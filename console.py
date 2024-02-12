@@ -8,6 +8,7 @@ import cmd
 import re
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     """Class that defines Airbnb clone public class instances."""
 
@@ -160,6 +161,7 @@ class HBNBCommand(cmd.Cmd):
 
         setattr(storage.all()[key], attribute_name, attribute_value)
         storage.all()[key].save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from file_storage import FileStorage
 import os
 
+
 class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
@@ -53,6 +54,7 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertEqual(obj1.to_dict(), reloaded_obj1.to_dict())
         self.assertEqual(obj2.to_dict(), reloaded_obj2.to_dict())
+
 
 if __name__ == '__main__':
     unittest.main()

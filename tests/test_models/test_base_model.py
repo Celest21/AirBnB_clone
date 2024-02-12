@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 from datetime import datetime
 import time  # For sleeping between actions
 
+
 class TestBaseModel(unittest.TestCase):
     def test_initialization(self):
         """Test object creation and initial attributes"""
@@ -22,7 +23,7 @@ class TestBaseModel(unittest.TestCase):
         """Test the save method updates 'updated_at'"""
         my_model = BaseModel()
         initial_updated_at = my_model.updated_at
-        time.sleep(1)  # Sleep for a short duration to simulate a time difference
+        time.sleep(1)
         my_model.save()
         self.assertNotEqual(my_model.updated_at, initial_updated_at)
 
@@ -56,6 +57,6 @@ class TestBaseModel(unittest.TestCase):
         """Check if the recreated instance has the same attributes"""
         self.assertEqual(my_model.__dict__, my_new_model.__dict__)
 
+
 if __name__ == '__main__':
     unittest.main()
-
